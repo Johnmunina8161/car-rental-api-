@@ -26,24 +26,25 @@ app.get('/auth/google',
 app.get('/auth/google/callback',
   passport.authenticate('google', { session: false, failureRedirect: '/' }),
   (req, res) => {
-    const token = jwt.sign({ id: req.user._id, email: req.user.email }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign(
+      { id: req.user._id, email: req.user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
     res.json({ message: 'Login successful', token });
   }
 );
 
-// Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// Swagger served at root
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Routes
+// API routes
 app.use('/cars', require('./routes/cars'));
 app.use('/users', require('./routes/users'));
 app.use('/locations', require('./routes/locations'));
 app.use('/rentals', require('./routes/rentals'));
 
-// Default route
-app.get('/', (req, res) => res.send('🚗 Car Rental API Running'));
-
-// Error handler
+// Optional: Error handler
 app.use((err, req, res, next) => res.status(500).json({ error: 'Something went wrong!' }));
 
 // Start server
