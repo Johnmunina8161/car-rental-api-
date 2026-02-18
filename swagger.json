@@ -3,7 +3,7 @@
   "info": {
     "title": "Car Rental API",
     "version": "1.0.0",
-    "description": "Full Car Rental API with JWT authentication and CRUD for Cars, Users, Locations, and Rentals.\n\n**Google Auth URL:** [https://car-rental-api-wa44.onrender.com/api/auth/google](https://car-rental-api-wa44.onrender.com/api/auth/google)"
+    "description": "Full Car Rental API with JWT authentication and CRUD for Cars, Users, Locations, and Rentals.\n\n**Google Auth:** [Click here to Login](https://car-rental-api-wa44.onrender.com/auth/google)"
   },
   "servers": [
     {
