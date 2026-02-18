@@ -6,7 +6,7 @@
     "description": "Full Car Rental API with JWT authentication and CRUD for Cars, Users, Locations, and Rentals."
   },
   "servers": [
-    { "url": "http://localhost:3000" }
+    { "url": "http://localhost:3000/api" }
   ],
   "tags": [
     { "name": "Auth", "description": "Authentification avec Google" },
@@ -86,7 +86,9 @@
       }
     }
   },
-  "security": [],
+  "security": [
+    { "bearerAuth": [] }
+  ],
   "paths": {
     "/auth/google": {
       "get": {
@@ -106,10 +108,7 @@
             "description": "Login successful",
             "content": {
               "application/json": {
-                "example": {
-                  "message": "Login successful",
-                  "token": "<JWT_TOKEN>"
-                }
+                "example": { "message": "Login successful", "token": "<JWT_TOKEN>" }
               }
             }
           }
@@ -132,82 +131,31 @@
         },
         "responses": {
           "201": { "description": "Car created successfully" },
-          "400": { "description": "Validation error, missing fields" }
+          "400": { "description": "Validation error" }
         }
       }
     },
     "/cars/{id}": {
-      "get": {
-        "tags": ["Cars"],
-        "summary": "Get a car by ID",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "Car details" }, "404": { "description": "Car not found" } }
-      },
-      "put": {
-        "tags": ["Cars"],
-        "summary": "Update a car",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "requestBody": {
-          "required": true,
-          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Car" } } }
-        },
-        "responses": {
-          "200": { "description": "Car updated successfully" },
-          "400": { "description": "Validation error" },
-          "404": { "description": "Car not found" }
-        }
-      },
-      "delete": {
-        "tags": ["Cars"],
-        "summary": "Delete a car",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "responses": { "204": { "description": "Car deleted successfully" }, "404": { "description": "Car not found" } }
-      }
+      "get": { "tags": ["Cars"], "summary": "Get a car by ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Car details" }, "404": { "description": "Car not found" } } },
+      "put": { "tags": ["Cars"], "summary": "Update a car", "security": [{ "bearerAuth": [] }], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Car" } } } }, "responses": { "200": { "description": "Car updated successfully" }, "400": { "description": "Validation error" }, "404": { "description": "Car not found" } } },
+      "delete": { "tags": ["Cars"], "summary": "Delete a car", "security": [{ "bearerAuth": [] }], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "204": { "description": "Car deleted successfully" }, "404": { "description": "Car not found" } } }
     },
     "/locations": {
       "get": { "tags": ["Locations"], "summary": "Get all locations", "responses": { "200": { "description": "Array of locations" } } },
-      "post": {
-        "tags": ["Locations"],
-        "summary": "Create location",
-        "security": [{ "bearerAuth": [] }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Location" } } } },
-        "responses": { "201": { "description": "Location created" }, "400": { "description": "Validation error" } }
-      }
+      "post": { "tags": ["Locations"], "summary": "Create location", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Location" } } } }, "responses": { "201": { "description": "Location created" }, "400": { "description": "Validation error" } } }
     },
     "/locations/{id}": {
       "get": { "tags": ["Locations"], "summary": "Get location by ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Location details" }, "404": { "description": "Not found" } } },
-      "put": {
-        "tags": ["Locations"],
-        "summary": "Update location",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Location" } } } },
-        "responses": { "200": { "description": "Updated successfully" }, "400": { "description": "Validation error" }, "404": { "description": "Not found" } }
-      },
+      "put": { "tags": ["Locations"], "summary": "Update location", "security": [{ "bearerAuth": [] }], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Location" } } } }, "responses": { "200": { "description": "Updated successfully" }, "400": { "description": "Validation error" }, "404": { "description": "Not found" } } },
       "delete": { "tags": ["Locations"], "summary": "Delete location", "security": [{ "bearerAuth": [] }], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "204": { "description": "Deleted" }, "404": { "description": "Not found" } } }
     },
     "/rentals": {
       "get": { "tags": ["Rentals"], "summary": "Get all rentals", "responses": { "200": { "description": "Array of rentals" } } },
-      "post": {
-        "tags": ["Rentals"],
-        "summary": "Create rental",
-        "security": [{ "bearerAuth": [] }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Rental" } } } },
-        "responses": { "201": { "description": "Rental created" }, "400": { "description": "Validation error" } }
-      }
+      "post": { "tags": ["Rentals"], "summary": "Create rental", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Rental" } } } }, "responses": { "201": { "description": "Rental created" }, "400": { "description": "Validation error" } } }
     },
     "/rentals/{id}": {
       "get": { "tags": ["Rentals"], "summary": "Get rental by ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Rental details" }, "404": { "description": "Not found" } } },
-      "put": {
-        "tags": ["Rentals"],
-        "summary": "Update rental",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Rental" } } } },
-        "responses": { "200": { "description": "Updated successfully" }, "400": { "description": "Validation error" }, "404": { "description": "Not found" } }
-      },
+      "put": { "tags": ["Rentals"], "summary": "Update rental", "security": [{ "bearerAuth": [] }], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Rental" } } } }, "responses": { "200": { "description": "Updated successfully" }, "400": { "description": "Validation error" }, "404": { "description": "Not found" } } },
       "delete": { "tags": ["Rentals"], "summary": "Delete rental", "security": [{ "bearerAuth": [] }], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "204": { "description": "Deleted" }, "404": { "description": "Not found" } } }
     }
   }
