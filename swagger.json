@@ -19,7 +19,8 @@
     { "name": "Auth", "description": "Authentification avec Google" },
     { "name": "Cars", "description": "Gestion du catalogue de voitures" },
     { "name": "Locations", "description": "Gestion des agences" },
-    { "name": "Rentals", "description": "Gestion des réservations" }
+    { "name": "Rentals", "description": "Gestion des réservations" },
+    { "name": "Users", "description": "Gestion des utilisateurs" }
   ],
   "components": {
     "securitySchemes": {
@@ -40,10 +41,10 @@
           "pricePerDay": { "type": "number" }
         },
         "example": {
-          "make": "Toyota",
-          "model": "Corolla",
-          "year": 2022,
-          "pricePerDay": 50
+          "make": "Volkswagen",
+          "model": "Polo Vivo",
+          "year": 2024,
+          "pricePerDay": 450
         }
       },
       "Location": {
@@ -56,10 +57,10 @@
           "state": { "type": "string" }
         },
         "example": {
-          "name": "Downtown Branch",
-          "address": "123 Main St",
-          "city": "Los Angeles",
-          "state": "CA"
+          "name": "O.R. Tambo International",
+          "address": "Airport Rd, Kempton Park",
+          "city": "Johannesburg",
+          "state": "Gauteng"
         }
       },
       "Rental": {
@@ -79,7 +80,7 @@
           "locationId": "642f8c1234567890abcdef56",
           "startDate": "2026-03-01",
           "endDate": "2026-03-05",
-          "totalPrice": 250
+          "totalPrice": 2250
         }
       },
       "User": {
@@ -124,7 +125,10 @@
           "required": true,
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Car" } } }
         },
-        "responses": { "201": { "description": "Car created" } }
+        "responses": { 
+          "201": { "description": "Car created" },
+          "400": { "description": "Bad Request - Validation Failed" }
+        }
       }
     },
     "/cars/{id}": {
@@ -149,6 +153,30 @@
       "get": { "tags": ["Rentals"], "summary": "Get rental by ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "Details" } } },
       "put": { "tags": ["Rentals"], "summary": "Update rental", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Rental" } } } }, "responses": { "200": { "description": "Updated" } } },
       "delete": { "tags": ["Rentals"], "summary": "Delete rental", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "204": { "description": "Deleted" } } }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user by ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete user",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "204": { "description": "Deleted" } }
+      }
     }
   }
 }
