@@ -25,7 +25,7 @@ exports.getOne = async (req, res) => {
   }
 };
 
-/// CREATE CAR
+// CREATE CARS
 exports.create = async (req, res) => {
   try {
     const newCar = await Car.create(req.body);
@@ -35,7 +35,7 @@ exports.create = async (req, res) => {
   }
 };
 
-// UPDATE CAR
+// UPDATE CARS
 exports.update = async (req, res) => {
   try {
     const updatedCar = await Car.findByIdAndUpdate(
@@ -54,7 +54,7 @@ exports.update = async (req, res) => {
   }
 };
 
-// DELETE CAR
+// DELETE CARS
 exports.remove = async (req, res) => {
   try {
     const deletedCar = await Car.findByIdAndDelete(req.params.id);
