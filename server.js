@@ -10,15 +10,22 @@ require('./config/passport');
 
 const app = express();
 
+// -------------------
 // DB connection
+// -------------------
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.error('❌ MongoDB Error:', err));
 
+// -------------------
+// Middleware
+// -------------------
 app.use(cors());
 app.use(express.json());
 
+// -------------------
 // GOOGLE OAuth routes
+// -------------------
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
@@ -35,18 +42,26 @@ app.get('/auth/google/callback',
   }
 );
 
-// Swagger served at root
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// -------------------
+// Swagger UI (moved)
+// -------------------
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// API routes
-app.use('/cars', require('./routes/cars'));
-app.use('/users', require('./routes/users'));
-app.use('/locations', require('./routes/locations'));
-app.use('/rentals', require('./routes/rentals'));
+// -------------------
+// API routes (prefixed with /api)
+// -------------------
+app.use('/api/cars', require('./routes/cars'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/locations', require('./routes/locations'));
+app.use('/api/rentals', require('./routes/rentals'));
 
-// Optional: Error handler
+// -------------------
+// Error handler
+// -------------------
 app.use((err, req, res, next) => res.status(500).json({ error: 'Something went wrong!' }));
 
+// -------------------
 // Start server
+// -------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
