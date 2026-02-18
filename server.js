@@ -43,9 +43,14 @@ app.get('/auth/google/callback',
 );
 
 // -------------------
-// Swagger UI (moved)
+// Swagger UI
 // -------------------
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Redirect root to Swagger UI
+app.get('/', (req, res) => {
+  res.redirect('/api-docs');
+});
 
 // -------------------
 // API routes (prefixed with /api)
